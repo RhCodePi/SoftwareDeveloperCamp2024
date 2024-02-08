@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IApplicantService
+    public interface IPersonControlService
     {
-        void ApplyForMask(Person person);
-        List<Person> GetPeople();
+        bool CheckPerson(Person person);
     }
 }

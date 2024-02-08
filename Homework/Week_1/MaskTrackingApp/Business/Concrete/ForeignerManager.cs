@@ -8,16 +8,11 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class ForeignerManager : IApplicantService
+    public class ForeignerManager :IApplicantService
     {
         public void ApplyForMask(Person person)
         {
             throw new NotImplementedException();
-        }
-
-        public bool CheckPerson(Person person)
-        {
-            return true;
         }
 
         public List<Person> GetPeople()

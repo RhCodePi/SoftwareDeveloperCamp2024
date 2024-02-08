@@ -1,19 +1,19 @@
 ﻿using Business.Abstract;
-using Business.Adapters;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    // if a person passes the mernis control system, then Ptt gives a mask to the person.
-    public class PttManager<T> : BaseCustomManager
-        where T : MernisServiceAdapter, new() 
+    // The pharmacy does not need the modern control system, provides masks for those who want them.
+    public class PharmacyManager<T> : BaseCustomManager
+        where T : LocalControlManager, new()
     {
-        private T instance; 
+        private T instance;
 
         public T Instance { 
             get {
@@ -21,13 +21,13 @@ namespace Business.Concrete
                 {
                     instance = new T();
                 }
-                return instance; 
+                return instance;
             } 
         }
 
         public override void GiveMask(Person person)
         {
-            if (Instance.CheckPerson(person))
+            if(Instance.CheckPerson(person))
             {
                 Console.WriteLine(person.FirstName + " " + person.LastName + " applied for a mask and was accepted. ");
             }
