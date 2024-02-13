@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Abstract
+namespace Business.Concrete
 {
-    public interface IApplicantService
+    public class LocalControlManager : BaseControlManager
     {
-        void ApplyForMask(Person person);
-        List<Person> GetPeople();
+        // return base class no need override the method
     }
 }

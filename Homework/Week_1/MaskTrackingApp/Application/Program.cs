@@ -1,5 +1,6 @@
 ﻿using Entities.Concrete;
 using Business.Concrete;
+using Business.Adapters;
 namespace Application;
 
 public class Program
@@ -16,10 +17,16 @@ public class Program
         // instance for PersonManager
         PersonManager personManger = new PersonManager();
 
-        // instance for PttManager
-        PttManager pttManager = new PttManager(personManger);
 
-        // ppt giving mask to person if person exist.
+        // using mernis control system for ptt manager
+        PttManager<MernisServiceAdapter> pttManager = new PttManager<MernisServiceAdapter>();
+
         pttManager.GiveMask(person1);
+                
+        // pharmacy not using menrnis control system, working with local control
+        PharmacyManager<LocalControlManager> pharmacyManager = new PharmacyManager<LocalControlManager>();
+
+        pharmacyManager.GiveMask(person1);
+
     }
 }
