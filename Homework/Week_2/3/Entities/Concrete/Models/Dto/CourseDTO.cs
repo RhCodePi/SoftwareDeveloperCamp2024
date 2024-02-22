@@ -1,17 +1,18 @@
-﻿using System;
+﻿using Entities.Abstract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Concrete
+namespace Entities.Concrete.Models.Dto
 {
-    public class Course
+    public class CourseDTO : ICourse
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; } = null!;
+
         public int CategoryId { get; set; }
+
         public int InstructorId { get; set; }
     }
 }

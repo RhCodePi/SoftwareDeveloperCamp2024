@@ -1,10 +1,12 @@
 ﻿using DataAccess.Abstract;
-using Entities.Concrete;
+using Entities.Abstract;
+using Entities.Concrete.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZstdSharp.Unsafe;
 
 namespace DataAccess.Concrete.InMemory
 {
@@ -16,27 +18,24 @@ namespace DataAccess.Concrete.InMemory
         {
             Course course1 = new Course()
             {
-                Id = 1,
+                Idcourse = 1,
                 Name = "Senior Develoeper Trainnig Camp (.NET)",
-                Description = "With a free and professional program, we learn advanced software development.",
                 InstructorId = 1,
                 CategoryId = 2
             };
 
             Course course2 = new Course()
             {
-                Id = 2,
+                Idcourse = 2,
                 Name = "Python",
-                Description = "With a free and professional program, we learn advanced software development.",
                 InstructorId = 2,
                 CategoryId = 2
             };
 
             Course course3 = new Course()
             {
-                Id = 3,
+                Idcourse = 3,
                 Name = "Java",
-                Description = "With a free and professional program, we learn advanced software development.",
                 InstructorId = 1,
                 CategoryId = 2
             };
@@ -53,7 +52,7 @@ namespace DataAccess.Concrete.InMemory
                 throw new Exception("Course already include");
             } 
             
-            _courses.Add(course);
+            _courses.Add((Course)course);
 
             return course;
         }
@@ -63,32 +62,30 @@ namespace DataAccess.Concrete.InMemory
             return _courses.FirstOrDefault(c => c.Name == name);
         }
 
-        public Course Remove(string name)
+        public Course Remove(Course course)
         {
-            var result = GetCourse(name);
+            var result = GetCourse(course.Name);
 
             if (result == null)
             {
                 throw new Exception("Course not found");
             }
 
-            _courses.Remove(result);
+            _courses.Remove((Course)result);
 
             return result;
         }
 
-        public Course Update(string name, Course course)
+        public Course Update(Course course)
         {
-            var result= GetCourse(name);
+            var result= GetCourse(course.Name);
 
             if (result == null)
             {
-                throw new Exception("Course not found");
+                return null;
             }
-
-            result.Id = course.Id;
+            result.Idcourse = course.Idcourse;
             result.Name = course.Name;
-            result.Description = course.Description;
             result.CategoryId = course.CategoryId;
             result.InstructorId = course.InstructorId;
 
@@ -109,5 +106,7 @@ namespace DataAccess.Concrete.InMemory
         {
             return _courses;
         }
+
+        
     }
 }

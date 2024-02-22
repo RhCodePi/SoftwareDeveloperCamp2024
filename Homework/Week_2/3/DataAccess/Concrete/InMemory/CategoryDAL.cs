@@ -1,5 +1,5 @@
 ﻿using DataAccess.Abstract;
-using Entities.Concrete;
+using Entities.Concrete.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,28 +16,39 @@ namespace DataAccess.Concrete
         {
             Category category1 = new Category()
             {
-                Id = 1,
-                categories = Categories.CyberSecurity,              
+                IdCategory = 1,
+                Categories = Categories.CyberSecurity.ToString(),              
             };
 
             Category category2 = new Category()
             {
-                Id = 2,
-                categories = Categories.Programming,
+                IdCategory = 2,
+                Categories = Categories.Programming.ToString(),
             };
 
             _categories.AddRange(new List<Category> { category1, category2});
         }
 
+        public Category AddCategory(Category category)
+        {
+            _categories.Add(category);
+
+            return category;
+        }
 
         public List<Category> GetAll()
         {
             return _categories;
         }
 
-        public Category GetByCategoryName(Categories categoryName)
+        public Category GetByCategoryName(string categoryName)
         {
-            return _categories.FirstOrDefault(c=> c.categories == categoryName);
+            return _categories.FirstOrDefault(c=> c.Categories == categoryName);
+        }
+
+        public Category GetByCategoryId(int id)
+        {
+            return _categories.FirstOrDefault(c => c.IdCategory == id);
         }
     }
 }

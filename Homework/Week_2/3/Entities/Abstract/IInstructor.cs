@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Concrete
+namespace Entities.Abstract
 {
-    public class Instructor
+    public interface IInstructor
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+
     }
 }

@@ -1,27 +1,26 @@
 ﻿using Business.Concrete;
 using DataAccess.Concrete;
 using DataAccess.Concrete.InMemory;
-using Entities.Concrete;
+using Entities.Concrete.Models;
 
 namespace Application
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             // Using inmemory data 
             CategoryManager categoryManager = new CategoryManager(new CategoryDAL());
             CourseManager courseManager = new CourseManager(new CourseDAL());
-            InstructorManager insturctorManager = new InstructorManager(new InsturctorDAL());
+            InstructorManager instructorManager = new InstructorManager(new InstructorDAL());
 
 
             // adding new course
             Course course = new Course()
             {
-                Id = courseManager.GetAll().Count + 1,
+                Idcourse = courseManager.GetAll().Count + 1,
                 Name = "Learn the Linux",
                 CategoryId = 1,
-                Description = "Learn bacis of the Linux",
                 InstructorId = 1,
             };
 
@@ -32,7 +31,7 @@ namespace Application
             //Get all course avaible
             foreach (var item in courseManager.GetAll())
             {
-                Console.WriteLine(item.Name);
+                Console.WriteLine(((Course)item).Name);
             }
 
             Console.WriteLine("------------------");
@@ -40,21 +39,20 @@ namespace Application
             // listing for CyberSecurity category
             foreach (var item in courseManager
                 .GetCourseByCategoryId(categoryManager
-                .GetByCategoryName(Categories.CyberSecurity).Id)
+                .GetByCategoryName(Categories.CyberSecurity.ToString()).IdCategory)
                 )
             {
-                Console.WriteLine($"{item.Name} -----------------" +
-                    $" {insturctorManager.GetInstructorById(item.InstructorId).Name}");
+                Console.WriteLine($"{((Course)item).Name} -----------------" +
+                    $" {instructorManager.GetInstructorById(((Course)item).InstructorId).Name}");
             }
 
 
 
             Course updateCourse = new Course()
             {
-                Id = course.Id,
+                Idcourse = course.Idcourse,
                 Name = "Linux",
                 CategoryId= 1,
-                Description= "Bacis of Linux",
                 InstructorId = 2,
             };
 
@@ -64,14 +62,14 @@ namespace Application
 
 
 
-            // Remove the updated data
-            courseManager.Remove(course.Name);
+            // Remove the updated data 
+            //courseManager.Remove(course.Name);
 
             Console.WriteLine("------------------");
 
             foreach (var item in courseManager.GetAll())
             {
-                Console.WriteLine(item.Name);
+                Console.WriteLine(((Course)item).Name);
             }
 
             

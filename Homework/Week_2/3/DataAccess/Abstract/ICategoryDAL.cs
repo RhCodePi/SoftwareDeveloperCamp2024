@@ -1,4 +1,4 @@
-﻿using Entities.Concrete;
+﻿using Entities.Concrete.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,9 @@ namespace DataAccess.Abstract
 {
     public interface ICategoryDAL
     {
+        Category AddCategory(Category category);
         List<Category> GetAll();
-        Category GetByCategoryName(Categories categoryName);
+        Category GetByCategoryName(string categoryName);
+        Category GetByCategoryId(int id);
     }
 }

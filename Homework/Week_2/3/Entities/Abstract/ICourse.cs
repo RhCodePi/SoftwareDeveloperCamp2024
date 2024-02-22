@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Concrete
+namespace Entities.Abstract
 {
-    public enum Categories
+    public interface ICourse
     {
-        CyberSecurity = 1,
-        Programming,
     }
 }

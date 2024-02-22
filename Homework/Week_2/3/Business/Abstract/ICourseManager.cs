@@ -1,4 +1,7 @@
-﻿using Entities.Concrete;
+﻿using Entities.Abstract;
+using Entities.Concrete;
+using Entities.Concrete.Models;
+using Entities.Concrete.Models.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +12,12 @@ namespace Business.Abstract
 {
     public interface ICourseManager
     {
-        void Add(Course course);
-        void Remove(string name);
-        void Update(string name, Course course);
-        List<Course> GetCourseByInstructor(int instructorId);
-        List<Course> GetCourseByCategoryId(int categoryId);
-        List<Course> GetAll();
+        Course Add(CourseDTO courseDto);
+        Course Remove(string name);
+        Course Update(string name, CourseDTO courseDTO, bool[] parameters);
+        CourseDTO GetCourse(string name);
+        List<CourseDTO> GetCourseByInstructor(int instructorId);
+        List<CourseDTO> GetCourseByCategoryId(int categoryId);
+        List<CourseDTO> GetAll();
     }
 }
