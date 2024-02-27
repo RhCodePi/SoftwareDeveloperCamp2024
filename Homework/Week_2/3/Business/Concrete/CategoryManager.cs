@@ -1,8 +1,9 @@
 ﻿using Business.Abstract;
+using Business.Dtos.Mapper;
+using Business.Dtos.Requests.CategoryRequests;
+using Business.Dtos.Responses.CategoryResponses;
 using DataAccess.Abstract;
-using Entities.Concrete.Mapper;
 using Entities.Concrete.Models;
-using Entities.Concrete.Models.Dto;
 
 namespace Business.Concrete
 {
@@ -15,36 +16,60 @@ namespace Business.Concrete
             _categoryDAL = categoryDAL;
         }
 
-        public List<Category> GetAll()
+        public List<GetAllCategoryResponse> GetAll()
         {
-            return _categoryDAL.GetAll();
+            var categories = _categoryDAL.GetAll();
+
+            if(categories.Count <= 0)
+            {
+                throw new Exception("Categories are empty, please add new category");
+            }
+
+            var response = categories.Select(c => CategoryMapper.GetAllFromCourse(c)).ToList();
+
+            return response;
         }
 
-        public Category GetByCategoryName(string name)
+        public CreatedCategoryResponse GetByCategoryName(string name)
         {
+            var category = _categoryDAL.GetByCategoryName(name);
 
-            return _categoryDAL.GetByCategoryName(name);
+
+            if(category == null) {
+                throw new Exception("Category not found");
+            }
+
+            var response = CategoryMapper.GetResponseFromCategory(category);
+
+            return response;
         }
-        public Category AddCategory(CategoryDTO categoryDTO)
+        public CreatedCategoryResponse AddCategory(CreateCategoryRequest createCategoryRequest)
         {
-            if (categoryDTO == null)
+            if (createCategoryRequest == null)
                 throw new Exception("Invalid Category Entering");
 
-            var result = CategoryMapper.GetCategory(categoryDTO);
+            var category = CategoryMapper.GetCategoryFromRequest(createCategoryRequest);
 
-            _categoryDAL.AddCategory(result);
 
-            return result;
+            var response = CategoryMapper.GetResponseFromCategory(category);
+
+            _categoryDAL.AddCategory(category);
+
+            return response;
         }
 
-        public Category GetByCategoryId(int id)
+        public CreatedCategoryResponse GetByCategoryId(int id)
         {
-            var result = _categoryDAL.GetByCategoryId(id);
+            var category = _categoryDAL.GetByCategoryId(id);
 
-            if (result == null)
+            if (category == null)
                 throw new Exception("Category not found");
 
-            return result;
+
+            var response = CategoryMapper.GetResponseFromCategory(category);
+
+
+            return response;
         }
 
         public Category AddCourseToCategory(int categoryId, Course course)

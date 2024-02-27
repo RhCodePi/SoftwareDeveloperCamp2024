@@ -1,14 +1,15 @@
-﻿using Entities.Abstract;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Concrete.Models.Dto
+namespace Business.Dtos.Responses.InstructorResponses
 {
-    public class InstructorDTO : IInstructor
+    public class CreatedInstructorResponse
     {
+        public int IdInstructor { get; set; }
+
         public string Name { get; set; } = null!;
     }
 }

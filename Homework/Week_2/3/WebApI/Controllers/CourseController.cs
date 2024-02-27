@@ -1,5 +1,5 @@
 ﻿using Business.Abstract;
-using Entities.Concrete.Models.Dto;
+using Business.Dtos.Requests.CourseRequests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApI.Controllers
@@ -63,11 +63,11 @@ namespace WebApI.Controllers
         }
 
         [HttpPost("/course/add/")]
-        public IActionResult AddCourse(CourseDTO courseDTO)
+        public IActionResult AddCourse(CreateCourseRequest courseRequest)
         {
             try
             {
-                var result = _courseManager.Add(courseDTO);
+                var result = _courseManager.Add(courseRequest);
 
                 return new OkObjectResult(result);
 
@@ -96,7 +96,7 @@ namespace WebApI.Controllers
         }
 
         [HttpPut("/course/update/")]
-        public IActionResult UpdateCourse(string name, CourseDTO courseDTO, 
+        public IActionResult UpdateCourse(string name, CreateCourseRequest courseDTO, 
             bool isFirstInputChange, bool isSecondInputChange, bool isThirdInputChange)
         {
             try

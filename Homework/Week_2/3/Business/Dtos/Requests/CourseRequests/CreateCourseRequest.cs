@@ -1,13 +1,12 @@
-﻿using Entities.Abstract;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Concrete.Models.Dto
+namespace Business.Dtos.Requests.CourseRequests
 {
-    public class CourseDTO : ICourse
+    public class CreateCourseRequest
     {
         public string Name { get; set; } = null!;
 

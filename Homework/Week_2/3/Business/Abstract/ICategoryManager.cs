@@ -1,5 +1,6 @@
-﻿using Entities.Concrete.Models;
-using Entities.Concrete.Models.Dto;
+﻿using Business.Dtos.Requests.CategoryRequests;
+using Business.Dtos.Responses.CategoryResponses;
+using Entities.Concrete.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ namespace Business.Abstract
 {
     public interface ICategoryManager
     {
-        Category AddCategory(CategoryDTO categoryDTO);
-        List<Category> GetAll();
-        Category GetByCategoryName(string name);
-        Category GetByCategoryId(int id);
+        CreatedCategoryResponse AddCategory(CreateCategoryRequest categoryRequest);
+        List<GetAllCategoryResponse> GetAll();
+        CreatedCategoryResponse GetByCategoryName(string name);
+        CreatedCategoryResponse GetByCategoryId(int id);
     }
 }

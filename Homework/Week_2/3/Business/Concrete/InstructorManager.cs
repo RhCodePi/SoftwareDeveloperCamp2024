@@ -1,13 +1,9 @@
 ﻿using Business.Abstract;
+using Business.Dtos.Mapper;
+using Business.Dtos.Requests.InstructorRequests;
+using Business.Dtos.Responses.InstructorResponses;
 using DataAccess.Abstract;
-using Entities.Concrete.Mapper;
-using Entities.Concrete.Models;
-using Entities.Concrete.Models.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Business.Concrete
 {
@@ -20,45 +16,72 @@ namespace Business.Concrete
             _instructorDAl = instructorDAl;
         }
 
-        public Instructor AddInstructor(InstructorDTO instructorDto)
+        public CreatedInstructorResponse AddInstructor(CreateInstructorRequest createInstructorRequest)
         {
-            if (instructorDto == null)
+            if (createInstructorRequest == null)
                 throw new Exception("Invalid instructor entring");
 
-            var instructor = InsturctorMapper.GetInstructor(instructorDto);
+            var instructor = InstructorMapper.GetInstructorFromRequest(createInstructorRequest);
 
             _instructorDAl.AddInstructor(instructor);
 
-            return instructor;
+            var response = InstructorMapper.GetResponseFromInstructor(instructor);
+
+            return response;
         }
 
-        public Instructor DeleteInstructor(int id)
+        public CreatedInstructorResponse DeleteInstructor(int id)
         {
-            var result = _instructorDAl.GetInstructorById(id);
+            var instructor = _instructorDAl.GetInstructorById(id);
 
-            if(result == null)
+            if(instructor == null)
             {
                 Console.WriteLine("Invalid instructor");
                 throw new Exception("Instructor not found.");
             }
-            _instructorDAl.DeleteInstructor(result);
 
-            return result;
+            _instructorDAl.DeleteInstructor(instructor);
+
+            var response = InstructorMapper.GetResponseFromInstructor(instructor);
+
+            return response;
         }
 
-        public List<Instructor> GetAll()
+        public List<GetAllInstructorResponse> GetAll()
         {
-            return _instructorDAl.GetAll();
+            var instructors = _instructorDAl.GetAll();
+
+            var response = instructors.Select(i => InstructorMapper.GetAllResponseFromInstructor(i)).ToList();
+
+            return response;
         }
 
-        public Instructor GetInstructorById(int id)
+        public CreatedInstructorResponse GetInstructorById(int id)
         {
-            return _instructorDAl.GetInstructorById(id);
+            var instructor = _instructorDAl.GetInstructorById(id);
+
+            if(instructor == null)
+            {
+                throw new Exception("Instructor not exist");
+            }
+
+            var response = InstructorMapper.GetResponseFromInstructor(instructor);
+            
+            return response;
         }
 
-        public Instructor GetInstructorByName(string name)
+        public CreatedInstructorResponse GetInstructorByName(string name)
         {
-            return _instructorDAl.GetInstructorByName(name);
+            var instructor = _instructorDAl.GetInstructorByName(name);
+
+            if(instructor == null)
+            {
+                throw new Exception("Instructor not exist");
+            }
+
+            var response = InstructorMapper.GetResponseFromInstructor(instructor);
+
+            return response;
         }
     }
 }

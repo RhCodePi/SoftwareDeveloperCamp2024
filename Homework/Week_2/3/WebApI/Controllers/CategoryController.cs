@@ -1,6 +1,5 @@
 ﻿using Business.Abstract;
-using Entities.Concrete.Models;
-using Entities.Concrete.Models.Dto;
+using Business.Dtos.Requests.CategoryRequests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApI.Controllers
@@ -50,11 +49,11 @@ namespace WebApI.Controllers
         }
 
         [HttpPost("/categories/add")]
-        public IActionResult AddCategory(CategoryDTO categoryDTO)
+        public IActionResult AddCategory(CreateCategoryRequest categoryRequest)
         {
             try
             {
-                var result = _categoryManager.AddCategory(categoryDTO);
+                var result = _categoryManager.AddCategory(categoryRequest);
 
                 return new OkObjectResult(result);
             }

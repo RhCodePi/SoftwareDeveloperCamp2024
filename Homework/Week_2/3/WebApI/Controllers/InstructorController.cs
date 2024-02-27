@@ -1,5 +1,5 @@
 ﻿using Business.Abstract;
-using Entities.Concrete.Models.Dto;
+using Business.Dtos.Requests.InstructorRequests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApI.Controllers
@@ -15,7 +15,7 @@ namespace WebApI.Controllers
             _instructorManager = instructorManager;
         }
 
-        [HttpGet("/instructor/name/")]
+        [HttpGet("/instructor/get/name/")]
         public IActionResult GetInstructorByName(string name)
         {
             try
@@ -26,8 +26,7 @@ namespace WebApI.Controllers
             }
             catch (Exception ex)
             {
-                return new BadRequestObjectResult(ex);
-                throw;
+                return new BadRequestObjectResult(ex.Message);
             }
         }
 
@@ -48,11 +47,11 @@ namespace WebApI.Controllers
         }
 
         [HttpPost("/instructor/add/")]
-        public IActionResult AddInstructor(InstructorDTO instructorDto)
+        public IActionResult AddInstructor(CreateInstructorRequest createInstructorRequest)
         {
             try
             {
-                var result = _instructorManager.AddInstructor(instructorDto);
+                var result = _instructorManager.AddInstructor(createInstructorRequest);
 
                 return new OkObjectResult(result);
             }

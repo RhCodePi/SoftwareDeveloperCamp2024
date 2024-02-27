@@ -1,9 +1,8 @@
 ﻿using Business.Abstract;
+using Business.Dtos.Mapper;
+using Business.Dtos.Requests.CourseRequests;
+using Business.Dtos.Responses.CourseResponses;
 using DataAccess.Abstract;
-using Entities.Abstract;
-using Entities.Concrete.Mapper;
-using Entities.Concrete.Models;
-using Entities.Concrete.Models.Dto;
 
 
 namespace Business.Concrete
@@ -18,85 +17,91 @@ namespace Business.Concrete
         }
 
 
-        public CourseDTO GetCourse(string name)
+        public CreatedCourseResponse GetCourse(string name)
         {
             var course = _courseDAL.GetCourse(name);
             if (course == null)
-                return null;
+            {
+                throw new Exception("Invalid Course");
+            }
 
-            var result = CourseMapper.MapToDTO(course);
+            var response = CourseMapper.GetResponseFromCourse(course);
 
-            return result;
+            return response;
         }
 
 
-        public Course Add(CourseDTO courseDto)
+        public CreatedCourseResponse Add(CreateCourseRequest createCourseRequest)
         {
-            if (courseDto == null)
+            if (createCourseRequest == null)
                 throw new Exception("Invalid Course Entering");
 
-            var result = CourseMapper.GetCourse(courseDto);
+            var course = CourseMapper.GetCourseFromRequest(createCourseRequest);
 
-            _courseDAL.Add(result);
+            _courseDAL.Add(course);
 
-            return result;
+            var response = CourseMapper.GetResponseFromCourse(course);
+
+            return response;
         }
 
-        public List<CourseDTO> GetAll()
+        public List<GetAllCourseResponse> GetAll()
         {
             var courses = _courseDAL.GetALL();
 
             if(courses.Count <= 0)
                 throw new Exception("Courses Not found");
 
-            var result = courses.Select(c => CourseMapper.MapToDTO(c)).ToList();
+            var response = courses.Select(c => CourseMapper.GetAllResponseFromCourse(c)).ToList();
 
-            return result;
+            return response;
         }
 
-        public List<CourseDTO> GetCourseByCategoryId(int categoryId)
+        public List<GetAllCourseResponse> GetCourseByCategoryId(int categoryId)
         {
             var courses = _courseDAL.GetCourseByCategoryId(categoryId);
 
             if (courses == null)
                 throw new Exception("Category not found");
 
-            var result = courses.Select(c => CourseMapper.MapToDTO(c)).ToList();
+            var response = courses.Select(c => CourseMapper.GetAllResponseFromCourse(c)).ToList();
 
-            return result;
+            return response;
         }
 
-        public List<CourseDTO> GetCourseByInstructor(int instructorId)
+        public List<GetAllCourseResponse> GetCourseByInstructor(int instructorId)
         {
             var courses = _courseDAL.GetByInstructorId(instructorId);
 
             if (courses == null)
                 throw new Exception("Instructor not found");
 
-            var result = courses.Select(c => CourseMapper.MapToDTO(c)).ToList();
+            var response = courses.Select(c => CourseMapper.GetAllResponseFromCourse(c)).ToList();
 
-            return result;
+            return response;
         }
 
-        public Course Remove(string name)
+        public CreatedCourseResponse Remove(string name)
         {
-            var result = _courseDAL.GetCourse(name);
+            var course = _courseDAL.GetCourse(name);
 
-            if(result == null)
+            if(course == null)
                 throw new Exception("Invalid removi");
 
-            _courseDAL.Remove(result);
+            _courseDAL.Remove(course);
+
+            var response = CourseMapper.GetResponseFromCourse(course);
 
             //Console.WriteLine($"Deletion =>>> {name} success");
-            return result;
+            return response;
         }
 
-        public Course Update(string name, CourseDTO courseDto, bool[] parameters)
+        public CreatedCourseResponse Update(string name, CreateCourseRequest createCourseRequest, bool[] parameters)
         {
-            if (courseDto == null)
+            if (createCourseRequest == null)
                 throw new Exception("Invalid course entring");
 
-            var course = CourseMapper.GetCourse(courseDto);
+            var course = CourseMapper.GetCourseFromRequest(createCourseRequest);
             var result = _courseDAL.GetCourse(name);
 
             if (result == null)
@@ -107,8 +112,11 @@ namespace Business.Concrete
             result.InstructorId = (parameters[2]) ? course.InstructorId : result.InstructorId;
 
             _courseDAL.Update(result);
+
+            var response = CourseMapper.GetResponseFromCourse(result);
+
             //Console.WriteLine($"Updating =>>> {((Course)course).Name} success");
-            return result;
+            return response;
         }
     }
 }

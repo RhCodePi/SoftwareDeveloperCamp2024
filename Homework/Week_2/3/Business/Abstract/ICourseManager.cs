@@ -1,23 +1,16 @@
-﻿using Entities.Abstract;
-using Entities.Concrete;
-using Entities.Concrete.Models;
-using Entities.Concrete.Models.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Business.Dtos.Requests.CourseRequests;
+using Business.Dtos.Responses.CourseResponses;
 
 namespace Business.Abstract
 {
     public interface ICourseManager
     {
-        Course Add(CourseDTO courseDto);
-        Course Remove(string name);
-        Course Update(string name, CourseDTO courseDTO, bool[] parameters);
-        CourseDTO GetCourse(string name);
-        List<CourseDTO> GetCourseByInstructor(int instructorId);
-        List<CourseDTO> GetCourseByCategoryId(int categoryId);
-        List<CourseDTO> GetAll();
+        CreatedCourseResponse Add(CreateCourseRequest courseRequest);
+        CreatedCourseResponse Remove(string name);
+        CreatedCourseResponse Update(string name, CreateCourseRequest courseRequest, bool[] parameters);
+        CreatedCourseResponse GetCourse(string name);
+        List<GetAllCourseResponse> GetCourseByInstructor(int instructorId);
+        List<GetAllCourseResponse> GetCourseByCategoryId(int categoryId);
+        List<GetAllCourseResponse> GetAll();
     }
 }
